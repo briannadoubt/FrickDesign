@@ -222,9 +222,14 @@ public struct FrickWorkspaceShell<Content: View, Inspector: View>: View {
             }
         }
         .tabViewStyle(.sidebarAdaptable)
+        // `.inspector` is unavailable on visionOS — skip it there (the inspector
+        // pane is a desktop/regular-width affordance; visionOS uses ornaments
+        // and the detail column instead).
+        #if !os(visionOS)
         .inspector(isPresented: inspectorPresented) {
             inspector()
         }
+        #endif
         .background(FrickPalette.background)
     }
 }
